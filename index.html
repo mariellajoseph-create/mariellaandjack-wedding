@@ -197,38 +197,15 @@
     text-align:center;color:var(--candle);letter-spacing:.14em;
     font-size:.75rem;text-transform:uppercase;margin-bottom:30px;
   }
-  .field{margin-bottom:22px;}
-  .field label{
-    display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--pewter);margin-bottom:8px;
+  .rsvp-embed{
+    background:var(--ivory);
+    border-radius:2px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
   }
-  .field input[type=text],.field input[type=email],.field select,.field textarea{
-    width:100%;background:transparent;border:none;border-bottom:1px solid rgba(244,241,233,.4);
-    color:var(--ivory);font-family:'Jost';font-size:1rem;padding:8px 2px;
-  }
-  .field select option{color:#111;}
-  .field textarea{resize:vertical;min-height:70px;}
-  .field input::placeholder,.field textarea::placeholder{color:rgba(244,241,233,.4);}
-  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-bottom-color:var(--candle);}
-  .radio-row{display:flex;gap:22px;}
-  .radio-row label{
-    display:flex;align-items:center;gap:8px;font-size:.9rem;
-    letter-spacing:normal;text-transform:none;color:var(--ivory);
-  }
-  .rsvp-submit{
-    width:100%;margin-top:8px;
-    background:var(--candle);color:var(--midnight);border:none;
-    padding:15px;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;
-    cursor:pointer;transition:background .25s ease;
-    font-family:'Jost';font-weight:500;
-  }
-  .rsvp-submit:hover{background:#d8b56f;}
-  .rsvp-note{text-align:center;font-size:.8rem;color:var(--pewter);margin-top:16px;}
-  .rsvp-success{
-    display:none;text-align:center;padding:20px 0;
-  }
-  .rsvp-success.show{display:block;}
-  .rsvp-success h3{font-style:italic;font-size:1.6rem;margin-bottom:8px;}
+  .rsvp-embed iframe{display:block;width:100%;border:none;}
+  .rsvp-note{text-align:center;font-size:.8rem;color:var(--pewter);margin-top:20px;}
+  .rsvp-note a{color:var(--candle);text-decoration:underline;}
 
   /* ---------- Travel ---------- */
   .travel-grid{
@@ -430,51 +407,11 @@
     <div class="rsvp-panel">
       <p class="rsvp-deadline">Please respond by 1st March 2027</p>
 
-      <form id="rsvpForm">
-        <div class="field">
-          <label for="name">Full name(s)</label>
-          <input type="text" id="name" placeholder="Jane Smith" required>
-        </div>
-        <div class="field">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="jane@email.com" required>
-        </div>
-        <div class="field">
-          <label>Will you be attending?</label>
-          <div class="radio-row">
-            <label><input type="radio" name="attending" value="yes" checked> Joyfully accept</label>
-            <label><input type="radio" name="attending" value="no"> Regretfully decline</label>
-          </div>
-        </div>
-        <div class="field">
-          <label for="guests">Number in your party</label>
-          <select id="guests">
-            <option>1</option><option>2</option><option>3</option><option>4</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="meal">Meal preference <span class="tbc" style="border-color:rgba(244,241,233,.4);color:var(--pewter);">TBC</span></label>
-          <select id="meal">
-            <option>To be confirmed</option>
-            <option>Meat</option>
-            <option>Fish</option>
-            <option>Vegetarian</option>
-            <option>Vegan</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="dietary">Dietary requirements or song requests</label>
-          <textarea id="dietary" placeholder="Let us know anything we should be aware of..."></textarea>
-        </div>
-        <button type="submit" class="rsvp-submit">Send RSVP</button>
-      </form>
-
-      <div class="rsvp-success" id="rsvpSuccess">
-        <h3>Thank you</h3>
-        <p style="color:var(--pewter);">Your reply has been noted — we can't wait to celebrate with you.</p>
+      <div class="rsvp-embed">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdU_WnJOFA4wKjvjix-VTd06KsO9a6nTROfMd0j8suQ1o9kGQ/viewform?embedded=true" title="RSVP form" width="100%" height="1000" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
       </div>
 
-      <p class="rsvp-note">This form is a working placeholder — connect it to a service like Google Forms or Formspree so replies actually reach you.</p>
+      <p class="rsvp-note">Having trouble with the form above? <a href="https://docs.google.com/forms/d/e/1FAIpQLSdU_WnJOFA4wKjvjix-VTd06KsO9a6nTROfMd0j8suQ1o9kGQ/viewform" target="_blank" rel="noopener">Open it in a new tab</a> instead.</p>
     </div>
   </div>
 </section>
@@ -627,12 +564,6 @@
     document.querySelectorAll('.faq-item.open .faq-a').forEach(a=>{ a.style.maxHeight = a.scrollHeight+'px'; });
   });
 
-  // RSVP form (front-end only placeholder)
-  document.getElementById('rsvpForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    this.style.display='none';
-    document.getElementById('rsvpSuccess').classList.add('show');
-  });
 </script>
 </body>
 </html>
