@@ -86,7 +86,9 @@
   /* ---------- Hero ---------- */
   .hero{
     background:
-      radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.06), transparent 55%),
+      radial-gradient(ellipse at 50% 42%, rgba(23,36,54,.35) 0%, rgba(23,36,54,.62) 100%),
+      linear-gradient(180deg, rgba(23,36,54,.74) 0%, rgba(23,36,54,.6) 42%, rgba(23,36,54,.42) 68%, rgba(23,36,54,.78) 100%),
+      url('hero-photo.jpg') center 15%/cover no-repeat,
       linear-gradient(180deg, var(--midnight) 0%, var(--midnight-2) 70%, var(--pine) 100%);
     color:var(--ivory);
     min-height:92vh;
@@ -96,18 +98,6 @@
     padding:60px 28px;
   }
   .hero-inner{position:relative;z-index:3;max-width:720px;}
-  .skyline{
-    position:absolute;left:0;right:0;bottom:0;height:34%;
-    background:var(--midnight);
-    clip-path:polygon(0% 100%,0% 60%,4% 60%,4% 45%,8% 45%,8% 62%,14% 62%,14% 30%,16% 30%,16% 20%,18% 20%,18% 30%,20% 30%,20% 55%,26% 55%,26% 40%,29% 25%,32% 40%,32% 58%,40% 58%,40% 15%,42% 8%,44% 15%,44% 58%,52% 58%,52% 48%,56% 48%,56% 58%,64% 58%,64% 35%,68% 35%,68% 20%,70% 20%,70% 35%,72% 35%,72% 58%,80% 58%,80% 44%,84% 44%,84% 58%,92% 58%,92% 65%,100% 65%,100% 100%);
-    opacity:.9;
-    z-index:1;
-  }
-  .stars{position:absolute;inset:0;z-index:0;}
-  .stars span{
-    position:absolute;width:2px;height:2px;background:var(--pewter);
-    border-radius:50%;opacity:.7;
-  }
   .snow{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;}
   .flake{
     position:absolute;top:-5%;
@@ -162,28 +152,6 @@
     color:#4a5364;font-size:1rem;
   }
 
-  /* ---------- Our Story ---------- */
-  .story-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;
-    margin-top:56px;
-  }
-  .story-art{
-    aspect-ratio:4/5;border-radius:2px;
-    background:
-      linear-gradient(160deg, var(--pine) 0%, var(--midnight) 100%);
-    position:relative;overflow:hidden;
-  }
-  .story-art::before{
-    content:"";position:absolute;inset:0;
-    background-image:radial-gradient(circle,rgba(244,241,233,.5) 1px, transparent 1.4px);
-    background-size:26px 26px;
-    opacity:.25;
-  }
-  .story-art .monoline{
-    position:absolute;inset:24px;border:1px solid rgba(244,241,233,.35);
-  }
-  .story-text p{margin:0 0 16px;color:#39414f;}
-  .story-text p:last-child{margin-bottom:0;}
   .tbc{
     display:inline-block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
     color:var(--heather);border:1px solid var(--heather);border-radius:20px;
@@ -343,7 +311,6 @@
 
   /* ---------- Responsive ---------- */
   @media (max-width:860px){
-    .story-grid{grid-template-columns:1fr;}
     .details-grid{grid-template-columns:1fr;}
     .travel-grid{grid-template-columns:1fr;}
     .party-grid{grid-template-columns:repeat(2,1fr);}
@@ -362,7 +329,6 @@
   <div class="nav-inner">
     <div class="nav-mono">M &amp; J</div>
     <ul class="nav-links">
-      <li><a href="#story">Our Story</a></li>
       <li><a href="#details">Details</a></li>
       <li><a href="#schedule">Schedule</a></li>
       <li><a href="#rsvp">RSVP</a></li>
@@ -377,8 +343,6 @@
 
 <!-- HERO -->
 <header class="hero">
-  <div class="stars" id="stars"></div>
-  <div class="skyline"></div>
   <div class="snow" id="snow"></div>
   <div class="hero-inner">
     <svg class="crest" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -392,24 +356,6 @@
     <a class="hero-cta" href="#rsvp">RSVP by March 2027</a>
   </div>
 </header>
-
-<!-- OUR STORY -->
-<section id="story">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Est. TBC <span class="tbc">Add your year</span></p>
-      <h2>Our Story</h2>
-    </div>
-    <div class="story-grid">
-      <div class="story-art"><div class="monoline"></div></div>
-      <div class="story-text">
-        <p>This is the place to tell your guests how you met — the coffee shop, the mutual friend, the terrible first date that somehow turned into the best one. A few warm sentences is plenty. <span class="tbc">Placeholder — swap in your story</span></p>
-        <p>You might also add how Jack proposed, or a small detail about why Edinburgh in winter means something to the two of you. <span class="tbc">Placeholder</span></p>
-        <p>We can't wait to celebrate this next chapter with the people we love most.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- DETAILS -->
 <section id="details" class="alt">
@@ -658,16 +604,6 @@
       snow.appendChild(f);
     }
   }
-  // Stars
-  const stars = document.getElementById('stars');
-  for(let i=0;i<60;i++){
-    const s = document.createElement('span');
-    s.style.left = Math.random()*100+'%';
-    s.style.top = Math.random()*55+'%';
-    s.style.opacity = Math.random()*.6+.2;
-    stars.appendChild(s);
-  }
-
   // Reveal on scroll
   document.querySelectorAll('section .wrap > *').forEach(el=>el.classList.add('reveal'));
   const io = new IntersectionObserver(entries=>{
