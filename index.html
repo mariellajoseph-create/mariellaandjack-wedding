@@ -90,6 +90,65 @@
   }
   .nav-links a:hover::after,.nav-links a:focus-visible::after{transform:scaleX(1);}
 
+  /* ---------- Party Mode ---------- */
+  .party-toggle{
+    flex-shrink:0;
+    border:none;border-radius:20px;color:#fff;
+    padding:8px 18px;font-family:'Jost';font-weight:500;
+    font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+    background:linear-gradient(90deg,#ff2fb0,#00c8e5,#ffd23f,#ff2fb0);
+    background-size:300% 100%;
+    animation:partyBtnShift 5s linear infinite;
+    box-shadow:0 2px 10px rgba(255,47,176,.35);
+  }
+  @keyframes partyBtnShift{ to{ background-position:300% 0; } }
+  .party-toggle[aria-pressed="true"]{ box-shadow:0 2px 16px rgba(255,47,176,.65); }
+
+  body.party-mode{
+    --midnight:#170022;
+    --midnight-2:#2a0138;
+    --pine:#ff2fb0;
+    --ivory:#fdf3ff;
+    --ivory-2:#f6e4ff;
+    --pewter:#d9b8ec;
+    --heather:#00c8e5;
+    --candle:#ffd23f;
+    transition:background-color .5s ease;
+  }
+
+  .party-lights{
+    position:fixed;inset:0;z-index:40;pointer-events:none;
+    mix-blend-mode:screen;opacity:0;transition:opacity .5s ease;
+    overflow:hidden;
+  }
+  body.party-mode .party-lights{opacity:.75;}
+  .party-lights span{
+    position:absolute;width:55vw;height:55vw;border-radius:50%;
+    filter:blur(70px);opacity:.6;
+    animation:partyFloat 7s ease-in-out infinite;
+  }
+  .party-lights span:nth-child(1){background:#ff2fb0;top:-15%;left:-10%;animation-duration:8s;}
+  .party-lights span:nth-child(2){background:#00c8e5;top:35%;right:-20%;animation-duration:10s;animation-delay:.6s;}
+  .party-lights span:nth-child(3){background:#ffd23f;bottom:-25%;left:15%;animation-duration:9s;animation-delay:1.2s;}
+  .party-lights span:nth-child(4){background:#7cff9e;top:5%;left:38%;animation-duration:11s;animation-delay:.3s;}
+  @keyframes partyFloat{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(7vw,-6vw) scale(1.18);}
+  }
+
+  .disco-ball{
+    position:fixed;top:64px;left:50%;transform:translateX(-50%);
+    font-size:26px;z-index:41;pointer-events:none;
+    opacity:0;transition:opacity .5s ease;
+    animation:discoSpin 4s linear infinite;
+  }
+  body.party-mode .disco-ball{opacity:1;}
+  @keyframes discoSpin{ to{ transform:translateX(-50%) rotate(360deg); } }
+
+  @media (prefers-reduced-motion: reduce){
+    .party-toggle,.party-lights span,.disco-ball{animation:none !important;}
+  }
+
   /* ---------- Hero ---------- */
   .hero{
     background:
@@ -252,6 +311,84 @@
   }
   .registry-links a:hover{background:var(--candle);color:var(--pine);}
 
+  /* ---------- Crossword ---------- */
+  .cw-toolbar{
+    display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+    margin:44px 0 22px;
+  }
+  .cw-btn{
+    background:none;border:1px solid var(--pine);color:var(--pine);
+    padding:9px 22px;font-family:'Jost';font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;
+    transition:background .25s ease,color .25s ease;
+  }
+  .cw-btn:hover{background:var(--pine);color:var(--ivory);}
+  .cw-progress{
+    font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--heather);
+    margin-left:6px;
+  }
+  .cw-clue-banner{
+    text-align:center;max-width:640px;margin:0 auto 30px;
+    font-family:'Cormorant Garamond';font-style:italic;font-size:1.25rem;
+    color:var(--pine);min-height:1.6em;
+  }
+  .cw-layout{
+    display:flex;gap:48px;align-items:flex-start;justify-content:center;flex-wrap:wrap;
+  }
+  .cw-grid-wrap{overflow-x:auto;max-width:100%;padding-bottom:6px;}
+  .cw-grid{
+    display:grid;
+    grid-template-columns:repeat(var(--cw-w), var(--cw-cell,26px));
+    grid-template-rows:repeat(var(--cw-h), var(--cw-cell,26px));
+    gap:1px;background:rgba(28,36,48,.15);
+    border:1px solid rgba(28,36,48,.25);
+    width:max-content;
+  }
+  .cw-cell{
+    position:relative;width:var(--cw-cell,26px);height:var(--cw-cell,26px);
+    background:var(--ivory);
+  }
+  .cw-cell.blocked{background:var(--midnight);}
+  .cw-cell input{
+    width:100%;height:100%;border:none;background:transparent;
+    text-align:center;text-transform:uppercase;
+    font-family:'Jost';font-weight:500;font-size:13px;color:var(--ink);
+    padding:0;caret-color:var(--candle);
+  }
+  .cw-cell input:focus{outline:none;background:rgba(198,161,91,.18);}
+  .cw-cell .cw-num{
+    position:absolute;top:1px;left:2px;font-size:7.5px;color:var(--heather);
+    font-family:'Jost';pointer-events:none;line-height:1;
+  }
+  .cw-cell.active-word input{background:rgba(124,100,120,.14);}
+  .cw-cell.active-cell input{background:rgba(198,161,91,.32);}
+  .cw-cell.correct input{background:rgba(47,74,62,.22);color:var(--pine);}
+  .cw-cell.incorrect input{background:rgba(178,64,64,.16);}
+  .cw-clues{
+    display:flex;gap:40px;flex-wrap:wrap;max-width:360px;
+  }
+  .cw-clue-col h3{
+    font-style:italic;font-size:1.2rem;margin-bottom:14px;color:var(--pine);
+  }
+  .cw-clue-col ol{list-style:none;margin:0;padding:0;}
+  .cw-clue-col li{
+    font-size:.85rem;color:#4a5364;margin-bottom:12px;line-height:1.5;
+    cursor:pointer;
+  }
+  .cw-clue-col li:hover{color:var(--pine);}
+  .cw-clue-col li b{color:var(--heather);font-weight:500;margin-right:4px;}
+  .cw-clue-col li.solved{color:var(--pewter);text-decoration:line-through;}
+  .cw-success{
+    display:none;text-align:center;margin-top:34px;
+    font-family:'Cormorant Garamond';font-style:italic;font-size:1.6rem;color:var(--pine);
+  }
+  .cw-success.show{display:block;}
+  @media (max-width:640px){
+    .cw-grid{ --cw-cell:19px; }
+    .cw-cell input{font-size:10px;}
+    .cw-cell .cw-num{font-size:6px;}
+    .cw-clues{max-width:100%;}
+  }
+
   /* ---------- FAQ ---------- */
   .faq-list{max-width:680px;margin:56px auto 0;}
   .faq-item{border-bottom:1px solid rgba(28,36,48,.12);}
@@ -309,6 +446,11 @@
 </head>
 <body>
 
+<div class="party-lights" id="partyLights" aria-hidden="true">
+  <span></span><span></span><span></span><span></span>
+</div>
+<div class="disco-ball" aria-hidden="true">🪩</div>
+
 <nav>
   <div class="nav-inner">
     <div class="nav-mono">M &amp; J</div>
@@ -319,9 +461,11 @@
       <li><a href="#travel">Travel</a></li>
       <li><a href="#party">Wedding Party</a></li>
       <li><a href="#registry">Registry</a></li>
+      <li><a href="#crossword">Crossword</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <button type="button" class="party-toggle" id="partyToggle" aria-pressed="false">🎉 Party Mode</button>
   </div>
 </nav>
 
@@ -485,6 +629,43 @@
   </div>
 </section>
 
+<!-- CROSSWORD -->
+<section id="crossword">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">A Little Fun</p>
+      <h2>Wedding Crossword</h2>
+      <p class="section-lede">Something to keep you entertained while you wait for your table, or on the journey up to Edinburgh. All the answers are somewhere on this page.</p>
+    </div>
+
+    <div class="cw-toolbar">
+      <button type="button" class="cw-btn" id="cwCheck">Check</button>
+      <button type="button" class="cw-btn" id="cwReveal">Reveal</button>
+      <button type="button" class="cw-btn" id="cwClear">Clear</button>
+      <span class="cw-progress" id="cwProgress">0 / 18 words solved</span>
+    </div>
+
+    <div class="cw-clue-banner" id="cwClueBanner">Select a square to begin</div>
+
+    <div class="cw-layout">
+      <div class="cw-grid-wrap">
+        <div class="cw-grid" id="cwGrid" style="--cw-w:18;--cw-h:20;"></div>
+      </div>
+      <div class="cw-clues">
+        <div class="cw-clue-col">
+          <h3>Across</h3>
+          <ol id="cwAcrossList"></ol>
+        </div>
+        <div class="cw-clue-col">
+          <h3>Down</h3>
+          <ol id="cwDownList"></ol>
+        </div>
+      </div>
+    </div>
+    <div class="cw-success" id="cwSuccess">You solved it — see you on the dancefloor. 🥂</div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq" class="alt">
   <div class="wrap">
@@ -536,43 +717,272 @@
 
 <script>
   // Snow
-  const snow = document.getElementById('snow');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!reduceMotion){
-    for(let i=0;i<40;i++){
-      const f = document.createElement('div');
-      f.className='flake';
-      f.style.left = Math.random()*100+'%';
-      f.style.width = f.style.height = (Math.random()*3+2)+'px';
-      f.style.opacity = Math.random()*.5+.3;
-      f.style.animationDuration = (Math.random()*8+10)+'s';
-      f.style.animationDelay = (Math.random()*10)+'s';
-      snow.appendChild(f);
+  try{
+    const snow = document.getElementById('snow');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!reduceMotion){
+      for(let i=0;i<40;i++){
+        const f = document.createElement('div');
+        f.className='flake';
+        f.style.left = Math.random()*100+'%';
+        f.style.width = f.style.height = (Math.random()*3+2)+'px';
+        f.style.opacity = Math.random()*.5+.3;
+        f.style.animationDuration = (Math.random()*8+10)+'s';
+        f.style.animationDelay = (Math.random()*10)+'s';
+        snow.appendChild(f);
+      }
     }
-  }
+  } catch(e){ console.error('Snow init failed:', e); }
+
   // Reveal on scroll
-  document.querySelectorAll('section .wrap > *').forEach(el=>el.classList.add('reveal'));
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-  },{threshold:.15});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  try{
+    document.querySelectorAll('section .wrap > *').forEach(el=>el.classList.add('reveal'));
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{threshold:.15});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  } catch(e){ console.error('Reveal-on-scroll init failed:', e); }
 
   // FAQ accordion
-  document.querySelectorAll('.faq-q').forEach(btn=>{
-    const item = btn.closest('.faq-item');
-    const answer = item.querySelector('.faq-a');
-    const setState = (open)=>{
-      item.classList.toggle('open', open);
-      btn.setAttribute('aria-expanded', open);
-      answer.style.maxHeight = open ? answer.scrollHeight+'px' : 0;
-    };
-    setState(item.classList.contains('open'));
-    btn.addEventListener('click', ()=> setState(!item.classList.contains('open')));
-  });
-  window.addEventListener('resize', ()=>{
-    document.querySelectorAll('.faq-item.open .faq-a').forEach(a=>{ a.style.maxHeight = a.scrollHeight+'px'; });
-  });
+  try{
+    document.querySelectorAll('.faq-q').forEach(btn=>{
+      const item = btn.closest('.faq-item');
+      const answer = item.querySelector('.faq-a');
+      const setState = (open)=>{
+        item.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open);
+        answer.style.maxHeight = open ? answer.scrollHeight+'px' : 0;
+      };
+      setState(item.classList.contains('open'));
+      btn.addEventListener('click', ()=> setState(!item.classList.contains('open')));
+    });
+    window.addEventListener('resize', ()=>{
+      document.querySelectorAll('.faq-item.open .faq-a').forEach(a=>{ a.style.maxHeight = a.scrollHeight+'px'; });
+    });
+  } catch(e){ console.error('FAQ accordion init failed:', e); }
 
+  // Party Mode toggle
+  try{
+    const partyBtn = document.getElementById('partyToggle');
+    const setParty = (on)=>{
+      document.body.classList.toggle('party-mode', on);
+      partyBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      partyBtn.textContent = on ? '🎉 Party Mode: On' : '🎉 Party Mode';
+      try{ localStorage.setItem('mj-party-mode', on ? '1' : '0'); } catch(e){}
+    };
+    partyBtn.addEventListener('click', ()=> setParty(!document.body.classList.contains('party-mode')));
+    try{
+      if(localStorage.getItem('mj-party-mode') === '1') setParty(true);
+    } catch(e){}
+  } catch(e){ console.error('Party mode init failed:', e); }
+
+  // ---------- Crossword ----------
+  const CW_WIDTH=18, CW_HEIGHT=20;
+  const CW_CELLS={"9,6":"E","9,7":"D","9,8":"I","9,9":"N","9,10":"B","9,11":"U","9,12":"R","9,13":"G","9,14":"H","6,12":"C","7,12":"H","8,12":"A","10,12":"L","11,12":"O","12,12":"T","13,12":"T","14,12":"E","6,8":"M","7,8":"A","8,8":"R","10,8":"E","11,8":"L","12,8":"L","13,8":"A","8,6":"D","10,6":"C","11,6":"E","12,6":"M","13,6":"B","14,6":"E","15,6":"R","14,0":"T","14,1":"H","14,2":"I","14,3":"S","14,4":"T","14,5":"L","13,2":"W","15,2":"N","16,2":"T","17,2":"E","18,2":"R","6,13":"A","6,14":"S","6,15":"T","6,16":"L","6,17":"E","15,4":"A","16,4":"R","17,4":"T","18,4":"A","19,4":"N","15,7":"I","15,8":"N","15,9":"G","15,10":"S","7,16":"A","8,16":"C","9,16":"E","10,16":"Y","2,17":"B","3,17":"R","4,17":"I","5,17":"D","16,9":"R","17,9":"O","18,9":"O","19,9":"M","13,13":"O","13,14":"A","13,15":"S","13,16":"T","12,14":"J","14,14":"C","15,14":"K","18,7":"S","18,8":"N","18,10":"W","3,14":"V","4,14":"O","5,14":"W","3,12":"R","3,13":"S","3,15":"P","0,13":"J","1,13":"E","2,13":"S"};
+  const CW_NUMBERS={"0,13":1,"2,17":2,"3,12":3,"3,14":4,"6,8":5,"6,12":6,"6,16":7,"8,6":8,"9,6":9,"12,14":10,"13,2":11,"13,12":12,"14,0":13,"14,4":14,"15,6":15,"15,9":16,"18,7":17};
+  const CW_ACROSS=[{num:3,clue:'Please reply by this (abbr.)',answer:'RSVP',row:3,col:12,len:4},{num:6,clue:'Edinburgh\'s famous fortress on the hill',answer:'CASTLE',row:6,col:12,len:6},{num:9,clue:'Scottish city hosting the big day',answer:'EDINBURGH',row:9,col:6,len:9},{num:12,clue:'Raise a glass for this',answer:'TOAST',row:13,col:12,len:5},{num:13,clue:'Scotland\'s prickly national flower',answer:'THISTLE',row:14,col:0,len:7},{num:15,clue:'Exchanged during the vows',answer:'RINGS',row:15,col:6,len:5},{num:17,clue:'White flakes that might fall on the day',answer:'SNOW',row:18,col:7,len:4}];
+  const CW_DOWN=[{num:1,clue:'Bridesmaid with the loudest laugh',answer:'JESS',row:0,col:13,len:4},{num:2,clue:'Mariella, on the day',answer:'BRIDE',row:2,col:17,len:5},{num:4,clue:'Promises spoken at the altar',answer:'VOWS',row:3,col:14,len:4},{num:5,clue:'The bride\'s first name',answer:'MARIELLA',row:6,col:8,len:8},{num:6,clue:'One of the three bridesmaids',answer:'CHARLOTTE',row:6,col:12,len:9},{num:7,clue:'Bridesmaid often found on the dancefloor',answer:'LACEY',row:6,col:16,len:5},{num:8,clue:'Month of the wedding',answer:'DECEMBER',row:8,col:6,len:8},{num:10,clue:'The groom\'s first name',answer:'JACK',row:12,col:14,len:4},{num:11,clue:'Season of frost, fairy lights - and this wedding',answer:'WINTER',row:13,col:2,len:6},{num:14,clue:'Checked fabric with clan history',answer:'TARTAN',row:14,col:4,len:6},{num:16,clue:'Jack, on the day',answer:'GROOM',row:15,col:9,len:5}];
+
+  try{
+  (function initCrossword(){
+    const gridEl = document.getElementById('cwGrid');
+    if(!gridEl) return;
+    gridEl.style.setProperty('--cw-w', CW_WIDTH);
+    gridEl.style.setProperty('--cw-h', CW_HEIGHT);
+
+    const cellAcross = {}, cellDown = {};
+    CW_ACROSS.forEach(e=>{ for(let i=0;i<e.len;i++){ cellAcross[(e.row)+','+(e.col+i)] = {entry:e, idx:i}; } });
+    CW_DOWN.forEach(e=>{ for(let i=0;i<e.len;i++){ cellDown[(e.row+i)+','+(e.col)] = {entry:e, idx:i}; } });
+
+    const inputs = {}; // "r,c" -> input element
+
+    for(let r=0;r<CW_HEIGHT;r++){
+      for(let c=0;c<CW_WIDTH;c++){
+        const key = r+','+c;
+        const cellDiv = document.createElement('div');
+        if(CW_CELLS[key]){
+          cellDiv.className = 'cw-cell';
+          cellDiv.dataset.row = r; cellDiv.dataset.col = c;
+          if(CW_NUMBERS[key]){
+            const num = document.createElement('span');
+            num.className='cw-num'; num.textContent = CW_NUMBERS[key];
+            cellDiv.appendChild(num);
+          }
+          const inp = document.createElement('input');
+          inp.setAttribute('maxlength','1');
+          inp.setAttribute('autocomplete','off');
+          inp.setAttribute('inputmode','text');
+          inp.dataset.row = r; inp.dataset.col = c;
+          cellDiv.appendChild(inp);
+          inputs[key] = inp;
+        } else {
+          cellDiv.className = 'cw-cell blocked';
+        }
+        gridEl.appendChild(cellDiv);
+      }
+    }
+
+    let activeDir = 'A';
+    let activeEntry = null;
+
+    function clearHighlight(){
+      document.querySelectorAll('.cw-cell.active-word').forEach(el=>el.classList.remove('active-word'));
+      document.querySelectorAll('.cw-cell.active-cell').forEach(el=>el.classList.remove('active-cell'));
+      document.querySelectorAll('.cw-clue-col li.active').forEach(el=>el.classList.remove('active'));
+    }
+
+    function highlightEntry(entry, dir, activeR, activeC){
+      clearHighlight();
+      for(let i=0;i<entry.len;i++){
+        const r = dir==='A'? entry.row : entry.row+i;
+        const c = dir==='A'? entry.col+i : entry.col;
+        const inp = inputs[r+','+c];
+        if(inp) inp.closest('.cw-cell').classList.add('active-word');
+      }
+      if(activeR!==undefined){
+        const el = inputs[activeR+','+activeC];
+        if(el) el.closest('.cw-cell').classList.add('active-cell');
+      }
+      const li = document.querySelector('.cw-clue-col li[data-dir="'+dir+'"][data-num="'+entry.num+'"]');
+      if(li) li.classList.add('active');
+      const banner = document.getElementById('cwClueBanner');
+      banner.textContent = entry.num + ' ' + (dir==='A'?'Across':'Down') + '. ' + entry.clue;
+    }
+
+    function selectCell(r, c, preferDir){
+      const key = r+','+c;
+      const a = cellAcross[key], d = cellDown[key];
+      let dir = preferDir;
+      if(!dir){
+        dir = a ? 'A' : 'D';
+      } else if(dir==='A' && !a){ dir='D'; }
+      else if(dir==='D' && !d){ dir='A'; }
+      activeDir = dir;
+      activeEntry = dir==='A' ? a.entry : d.entry;
+      highlightEntry(activeEntry, dir, r, c);
+      const inp = inputs[key];
+      if(inp) inp.focus();
+    }
+
+    function nextCell(r,c,dir,delta){
+      if(dir==='A') return [r, c+delta];
+      return [r+delta, c];
+    }
+
+    Object.keys(inputs).forEach(key=>{
+      const inp = inputs[key];
+      const [r,c] = key.split(',').map(Number);
+      inp.addEventListener('click', ()=>{
+        if(activeEntry && inp.closest('.cw-cell').classList.contains('active-cell')){
+          // toggle direction if both available
+          const a = cellAcross[key], d = cellDown[key];
+          if(a && d){ selectCell(r,c, activeDir==='A' ? 'D' : 'A'); return; }
+        }
+        selectCell(r,c);
+      });
+      inp.addEventListener('focus', ()=>{
+        const a = cellAcross[key], d = cellDown[key];
+        const dir = (activeDir==='A' && a) ? 'A' : (d ? 'D' : 'A');
+        activeDir = dir;
+        activeEntry = dir==='A' ? a.entry : d.entry;
+        highlightEntry(activeEntry, dir, r, c);
+      });
+      inp.addEventListener('input', ()=>{
+        inp.value = inp.value.replace(/[^a-zA-Z]/g,'').toUpperCase().slice(0,1);
+        inp.closest('.cw-cell').classList.remove('correct','incorrect');
+        if(inp.value){
+          const [nr,nc] = nextCell(r,c,activeDir,1);
+          const nextInp = inputs[nr+','+nc];
+          if(nextInp) nextInp.focus();
+        }
+        updateProgress();
+      });
+      inp.addEventListener('keydown', (e)=>{
+        if(e.key==='Backspace' && !inp.value){
+          const [pr,pc] = nextCell(r,c,activeDir,-1);
+          const prevInp = inputs[pr+','+pc];
+          if(prevInp){ prevInp.focus(); prevInp.value=''; }
+        } else if(e.key==='ArrowRight'){ e.preventDefault(); const t=inputs[r+','+(c+1)]; if(t) t.focus(); }
+        else if(e.key==='ArrowLeft'){ e.preventDefault(); const t=inputs[r+','+(c-1)]; if(t) t.focus(); }
+        else if(e.key==='ArrowDown'){ e.preventDefault(); const t=inputs[(r+1)+','+c]; if(t) t.focus(); }
+        else if(e.key==='ArrowUp'){ e.preventDefault(); const t=inputs[(r-1)+','+c]; if(t) t.focus(); }
+      });
+    });
+
+    function buildClueList(entries, listEl, dir){
+      entries.forEach(e=>{
+        const li = document.createElement('li');
+        li.dataset.num = e.num; li.dataset.dir = dir;
+        li.innerHTML = '<b>'+e.num+'.</b> '+e.clue;
+        li.addEventListener('click', ()=> selectCell(e.row, e.col, dir));
+        listEl.appendChild(li);
+      });
+    }
+    buildClueList(CW_ACROSS, document.getElementById('cwAcrossList'), 'A');
+    buildClueList(CW_DOWN, document.getElementById('cwDownList'), 'D');
+
+    function entrySolved(entry, dir){
+      for(let i=0;i<entry.len;i++){
+        const r = dir==='A'? entry.row : entry.row+i;
+        const c = dir==='A'? entry.col+i : entry.col;
+        const inp = inputs[r+','+c];
+        if(!inp || inp.value.toUpperCase() !== CW_CELLS[r+','+c]) return false;
+      }
+      return true;
+    }
+
+    function updateProgress(){
+      let solved = 0;
+      const total = CW_ACROSS.length + CW_DOWN.length;
+      CW_ACROSS.forEach(e=>{
+        const li = document.querySelector('.cw-clue-col li[data-dir="A"][data-num="'+e.num+'"]');
+        const ok = entrySolved(e,'A');
+        if(li) li.classList.toggle('solved', ok);
+        if(ok) solved++;
+      });
+      CW_DOWN.forEach(e=>{
+        const li = document.querySelector('.cw-clue-col li[data-dir="D"][data-num="'+e.num+'"]');
+        const ok = entrySolved(e,'D');
+        if(li) li.classList.toggle('solved', ok);
+        if(ok) solved++;
+      });
+      document.getElementById('cwProgress').textContent = solved+' / '+total+' words solved';
+      const success = document.getElementById('cwSuccess');
+      if(solved===total){ success.classList.add('show'); } else { success.classList.remove('show'); }
+    }
+
+    document.getElementById('cwCheck').addEventListener('click', ()=>{
+      Object.keys(inputs).forEach(key=>{
+        const inp = inputs[key];
+        const cell = inp.closest('.cw-cell');
+        cell.classList.remove('correct','incorrect');
+        if(inp.value){
+          cell.classList.add(inp.value.toUpperCase()===CW_CELLS[key] ? 'correct' : 'incorrect');
+        }
+      });
+      updateProgress();
+    });
+
+    document.getElementById('cwReveal').addEventListener('click', ()=>{
+      if(!confirm('Reveal all answers?')) return;
+      Object.keys(inputs).forEach(key=>{
+        inputs[key].value = CW_CELLS[key];
+        inputs[key].closest('.cw-cell').classList.remove('incorrect');
+        inputs[key].closest('.cw-cell').classList.add('correct');
+      });
+      updateProgress();
+    });
+
+    document.getElementById('cwClear').addEventListener('click', ()=>{
+      if(!confirm('Clear the whole puzzle?')) return;
+      Object.keys(inputs).forEach(key=>{
+        inputs[key].value='';
+        inputs[key].closest('.cw-cell').classList.remove('correct','incorrect');
+      });
+      updateProgress();
+    });
+  })();
+  } catch(e){ console.error('Crossword init failed:', e); }
 </script>
 </body>
 </html>
