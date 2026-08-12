@@ -145,8 +145,104 @@
   body.party-mode .disco-ball{opacity:1;}
   @keyframes discoSpin{ to{ transform:translateX(-50%) rotate(360deg); } }
 
+  /* ---- Y2K / pop-art overrides ---- */
+  body.party-mode h1, body.party-mode h2, body.party-mode h3{
+    font-family:'Comic Sans MS','Comic Sans','Chalkboard SE',cursive;
+    font-style:normal;
+    background:linear-gradient(90deg,#ff2fb0,#ffd23f,#00c8e5,#7cff9e,#ff2fb0);
+    background-size:300% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:partyBtnShift 4s linear infinite;
+    text-shadow:2px 2px 0 rgba(0,0,0,.18);
+  }
+  body.party-mode .eyebrow{
+    font-family:'Comic Sans MS','Comic Sans',cursive;font-weight:bold;
+    animation:partyBlink 1.4s steps(1) infinite;
+  }
+  @keyframes partyBlink{ 0%,49%{opacity:1;} 50%,100%{opacity:.35;} }
+
+  body.party-mode .hero-cta,
+  body.party-mode .cw-btn,
+  body.party-mode .rsvp-submit,
+  body.party-mode .registry-links a,
+  body.party-mode .party-toggle{
+    font-family:'Comic Sans MS','Comic Sans',cursive !important;
+    border:3px outset #fff !important;
+    border-radius:8px !important;
+    background:repeating-linear-gradient(45deg,#ff2fb0,#ff2fb0 10px,#ffd23f 10px,#ffd23f 20px) !important;
+    color:#170022 !important;
+    text-shadow:1px 1px 0 rgba(255,255,255,.6);
+    box-shadow:3px 3px 0 rgba(0,0,0,.35);
+    animation:none !important;
+  }
+  body.party-mode .hero-cta:hover,
+  body.party-mode .cw-btn:hover,
+  body.party-mode .rsvp-submit:hover,
+  body.party-mode .party-toggle:hover{
+    border-style:inset !important;
+  }
+  body.party-mode .card, body.party-mode .rsvp-panel, body.party-mode .registry-box,
+  body.party-mode .travel-card, body.party-mode .rsvp-embed{
+    border:3px outset #fff;
+    box-shadow:4px 4px 0 rgba(0,0,0,.25);
+  }
+
+  /* Marquee banner */
+  .party-marquee{
+    display:none;
+    background:repeating-linear-gradient(45deg,#ffd23f,#ffd23f 20px,#111 20px,#111 40px);
+    color:#111;font-family:'Comic Sans MS','Comic Sans',cursive;font-weight:bold;font-size:14px;
+    padding:7px 0;white-space:nowrap;overflow:hidden;
+    border-top:2px solid #000;border-bottom:2px solid #000;
+  }
+  .party-marquee.show{display:block;}
+  .party-marquee span{display:inline-block;padding-left:100%;animation:partyMarqueeMove 16s linear infinite;}
+  @keyframes partyMarqueeMove{ to{ transform:translateX(-100%); } }
+
+  /* Twinkling star field */
+  .party-stars{
+    position:fixed;inset:0;z-index:38;pointer-events:none;
+    opacity:0;transition:opacity .4s ease;
+  }
+  body.party-mode .party-stars{opacity:1;}
+  .party-stars i{
+    position:absolute;font-style:normal;color:#fff;
+    text-shadow:0 0 6px currentColor;
+    animation:partyTwinkle 1.8s ease-in-out infinite;
+  }
+  @keyframes partyTwinkle{ 0%,100%{opacity:.15;transform:scale(.7);} 50%{opacity:1;transform:scale(1.25);} }
+
+  /* Retro hit counter */
+  .party-counter{
+    position:fixed;bottom:18px;left:18px;z-index:42;
+    display:none;align-items:center;gap:8px;
+    background:#000;border:3px outset #888;border-radius:4px;
+    padding:6px 10px;box-shadow:3px 3px 0 rgba(0,0,0,.4);
+  }
+  .party-counter.show{display:flex;}
+  .party-counter b{
+    font-family:'Comic Sans MS','Comic Sans',cursive;font-size:10px;color:#ffd23f;
+  }
+  .party-counter span{
+    font-family:'Courier New',monospace;color:#39ff14;font-size:13px;letter-spacing:2px;
+  }
+
+  /* Cursor sparkle trail */
+  .party-sparkle{
+    position:fixed;pointer-events:none;z-index:9997;font-size:14px;
+    animation:sparkleFade .9s ease-out forwards;
+  }
+  @keyframes sparkleFade{
+    0%{opacity:1;transform:translateY(0) scale(1);}
+    100%{opacity:0;transform:translateY(-24px) scale(.4);}
+  }
+
   @media (prefers-reduced-motion: reduce){
-    .party-toggle,.party-lights span,.disco-ball{animation:none !important;}
+    .party-toggle,.party-lights span,.disco-ball,
+    body.party-mode h1, body.party-mode h2, body.party-mode h3,
+    body.party-mode .eyebrow, .party-marquee span, .party-stars i{
+      animation:none !important;
+    }
   }
 
   /* ---------- Hero ---------- */
@@ -450,6 +546,10 @@
   <span></span><span></span><span></span><span></span>
 </div>
 <div class="disco-ball" aria-hidden="true">🪩</div>
+<div class="party-stars" id="partyStars" aria-hidden="true"></div>
+<div class="party-counter" id="partyCounter" aria-hidden="true">
+  <b>VISITORS</b><span id="partyCounterNum">000000</span>
+</div>
 
 <nav>
   <div class="nav-inner">
@@ -468,6 +568,7 @@
     <button type="button" class="party-toggle" id="partyToggle" aria-pressed="false">🎉 Party Mode</button>
   </div>
 </nav>
+<div class="party-marquee" id="partyMarquee"><span>🎉 MARIELLA &amp; JACK ARE GETTING MARRIED 🎉 4TH DECEMBER 2027 🎉 ROYAL COLLEGE OF PHYSICIANS, EDINBURGH 🎉 RSVP BY MARCH 2027 🎉 SEE YOU ON THE DANCEFLOOR 🎉 THIS SITE IS BEST VIEWED AT 800x600 🎉</span></div>
 
 <!-- HERO -->
 <header class="hero">
@@ -764,16 +865,65 @@
   // Party Mode toggle
   try{
     const partyBtn = document.getElementById('partyToggle');
+    const marquee = document.getElementById('partyMarquee');
+    const counter = document.getElementById('partyCounter');
+    const counterNum = document.getElementById('partyCounterNum');
+    const starsField = document.getElementById('partyStars');
+
+    // Build a scattered star field once
+    const STAR_CHARS = ['✦','✧','★','☆','⋆','✩'];
+    for(let i=0;i<26;i++){
+      const s = document.createElement('i');
+      s.textContent = STAR_CHARS[Math.floor(Math.random()*STAR_CHARS.length)];
+      s.style.left = Math.random()*100+'%';
+      s.style.top = Math.random()*100+'%';
+      s.style.fontSize = (10+Math.random()*16)+'px';
+      s.style.color = ['#ff2fb0','#00c8e5','#ffd23f','#7cff9e','#fff'][Math.floor(Math.random()*5)];
+      s.style.animationDelay = (Math.random()*1.8)+'s';
+      s.style.animationDuration = (1.2+Math.random()*1.4)+'s';
+      starsField.appendChild(s);
+    }
+
+    // Retro hit counter (classic "you are visitor number..." bit)
+    let hits = 0;
+    try{
+      hits = parseInt(localStorage.getItem('mj-hits')||'0',10) + 1;
+      localStorage.setItem('mj-hits', String(hits));
+    } catch(e){ hits = Math.floor(Math.random()*9000)+1000; }
+    counterNum.textContent = String(hits).padStart(6,'0');
+
     const setParty = (on)=>{
       document.body.classList.toggle('party-mode', on);
       partyBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
       partyBtn.textContent = on ? '🎉 Party Mode: On' : '🎉 Party Mode';
+      marquee.classList.toggle('show', on);
+      counter.classList.toggle('show', on);
       try{ localStorage.setItem('mj-party-mode', on ? '1' : '0'); } catch(e){}
     };
     partyBtn.addEventListener('click', ()=> setParty(!document.body.classList.contains('party-mode')));
     try{
       if(localStorage.getItem('mj-party-mode') === '1') setParty(true);
     } catch(e){}
+
+    // Cursor sparkle trail (only while party mode is active)
+    const reduceMotionSparkle = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!reduceMotionSparkle){
+      let lastSparkle = 0;
+      document.addEventListener('mousemove', (e)=>{
+        if(!document.body.classList.contains('party-mode')) return;
+        const now = Date.now();
+        if(now - lastSparkle < 70) return;
+        lastSparkle = now;
+        const el = document.createElement('span');
+        el.className = 'party-sparkle';
+        el.textContent = STAR_CHARS[Math.floor(Math.random()*STAR_CHARS.length)];
+        el.style.left = (e.clientX-6)+'px';
+        el.style.top = (e.clientY-6)+'px';
+        el.style.color = ['#ff2fb0','#00c8e5','#ffd23f','#7cff9e'][Math.floor(Math.random()*4)];
+        document.body.appendChild(el);
+        setTimeout(()=> el.remove(), 950);
+      });
+    }
   } catch(e){ console.error('Party mode init failed:', e); }
 
   // ---------- Crossword ----------
