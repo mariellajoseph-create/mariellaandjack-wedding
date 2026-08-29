@@ -377,22 +377,6 @@
   .travel-card h3{font-style:italic;font-size:1.3rem;margin-bottom:8px;}
   .travel-card p{margin:0;color:#4a5364;font-size:.92rem;}
 
-  /* ---------- Wedding party ---------- */
-  .party-grid{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-top:56px;
-  }
-  .party-card{text-align:center;}
-  .party-photo{
-    aspect-ratio:1;border-radius:50%;
-    background:linear-gradient(160deg,var(--pewter),var(--ivory-2));
-    margin-bottom:14px;position:relative;overflow:hidden;
-  }
-  .party-photo::after{
-    content:"";position:absolute;inset:0;border:1px solid rgba(28,36,48,.12);border-radius:50%;
-  }
-  .party-card h4{font-family:'Cormorant Garamond';font-style:italic;font-size:1.2rem;margin-bottom:2px;}
-  .party-card span{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--heather);}
-
   /* ---------- Registry ---------- */
   .registry-box{
     max-width:640px;margin:56px auto 0;text-align:center;
@@ -530,7 +514,6 @@
   @media (max-width:860px){
     .details-grid{grid-template-columns:1fr;}
     .travel-grid{grid-template-columns:1fr;}
-    .party-grid{grid-template-columns:repeat(2,1fr);}
   }
   @media (max-width:640px){
     .nav-links{display:none;}
@@ -559,7 +542,6 @@
       <li><a href="#schedule">Schedule</a></li>
       <li><a href="#rsvp">RSVP</a></li>
       <li><a href="#travel">Travel</a></li>
-      <li><a href="#party">Wedding Party</a></li>
       <li><a href="#registry">Registry</a></li>
       <li><a href="#crossword">Crossword</a></li>
       <li><a href="#faq">FAQ</a></li>
@@ -693,24 +675,6 @@
         <h3>Parking</h3>
         <p>Central Edinburgh parking notes to follow. <span class="tbc">TBC</span></p>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- WEDDING PARTY -->
-<section id="party" class="alt">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Standing With Us</p>
-      <h2>Wedding Party</h2>
-    </div>
-    <div class="party-grid">
-      <div class="party-card"><div class="party-photo" style="background-image:url('party-charlotte.jpg');background-size:cover;background-position:center;"></div><h4>Charlotte</h4><span>Bridesmaid</span></div>
-      <div class="party-card"><div class="party-photo" style="background-image:url('party-lacey.jpg');background-size:cover;background-position:center;"></div><h4>Lacey</h4><span>Bridesmaid</span></div>
-      <div class="party-card"><div class="party-photo" style="background-image:url('party-jess.jpg');background-size:cover;background-position:center;"></div><h4>Jess</h4><span>Bridesmaid</span></div>
-      <div class="party-card"><div class="party-photo"></div><h4>Name TBC</h4><span>Best Man</span></div>
-      <div class="party-card"><div class="party-photo"></div><h4>Name TBC</h4><span>Groomsman</span></div>
-      <div class="party-card"><div class="party-photo"></div><h4>Name TBC</h4><span>Groomsman</span></div>
     </div>
   </div>
 </section>
